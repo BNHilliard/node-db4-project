@@ -22,6 +22,7 @@ exports.up = function(knex) {
     tbl.increments('si_id');
     tbl.integer('step_id').references('step_id').inTable('steps');
     tbl.integer('ingredient_id').references('ingredient_id').inTable('ingredients');
+    tbl.integer('quanitity').notNullable();
   })
 
 };
