@@ -24,36 +24,11 @@ module.exports = {
     }
   },
 
-  staging: {
-    client: 'sqlite3',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
+  testing: {
+    ...sharedConfig, 
+    connection: {filename: './data/recipes.test.db3'}
   },
 
-  production: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  }
+  production: {}
 
 };

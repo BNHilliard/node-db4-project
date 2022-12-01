@@ -1,28 +1,45 @@
 
-exports.up = function(knex) {
-  return knex.schema
+exports.up = async function(knex) {
+  await knex.schema
   .createTable('recipes', tbl => {
     tbl.increments('recipe_id');
-    tbl.varchar('recipe_name', 50).notNullable();
-    tbl.varchar('created_at').notNullable();
-    tbl.integer('steps');
+    tbl.string('recipe_name', 200).notNullable().unique();
   })
   .createTable('ingredients', tbl => {
     tbl.increments('ingredient_id');
-    tbl.varchar('ingredient_name'); 
-    tbl.varchar('unit')
+    tbl.string('ingredient_name', 200).notNullable().unique();
+    tbl.string('ingredient_unit', 10 )
   })
   .createTable('steps', tbl => {
     tbl.increments('step_id');
+    tbl.string('step_text', 200).notNullable();
     tbl.integer('step_number').notNullable();
-    tbl.varchar('step_instructions', 500).notNullable();
-    tbl.varchar('recipe_id').references('recipe_id').inTable('recipes').notNullable();
+    tbl.integer('recipe_id')
+    .unsigned()
+    .notNullable()
+    .references('recipe_id')
+    .inTable('recipes')
+    .onDelete('RESTRICT')
+    .onUpdate('RESTRICT')
+
   })
   .createTable('step_ingredients', tbl => {
-    tbl.increments('si_id');
-    tbl.integer('step_id').references('step_id').inTable('steps');
-    tbl.integer('ingredient_id').references('ingredient_id').inTable('ingredients');
-    tbl.integer('quanitity').notNullable();
+    tbl.increments('step_ingredient_id');
+    tbl.float('quantity').notNullable();
+    tbl.integer('step_id')
+      .unsigned()
+      .notNullable()
+      .references('step_id')
+      .inTable('steps')
+      .onDelete('RESTRICT')
+      .onUpdate('RESTRICT')
+    tbl.integer('ingredient_id')
+    .unsigned()
+    .notNullable()
+    .references('ingredient_id')
+    .inTable('ingredients')
+    .onDelete('RESTRICT')
+    .onUpdate('RESTRICT')
   })
 
 };
